@@ -1,8 +1,10 @@
 const express = require('express')
+const cors = require('cors')
 const app = express()
 const PORT = 4000
 
 // omogoca dostop do '/images/2_of_clubs.png
+app.use(cors())
 app.use(express.static('public'));
 
 app.get('/deck/shuffled', (req, res) => {
