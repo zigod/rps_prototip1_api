@@ -15,10 +15,15 @@ function generateDeck() {
     const suits = ['hearts', 'diamonds', 'clubs', 'spades'];
     const ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'jack', 'queen', 'king', 'ace'];
     const deck = [];
+    let value;
     for (const suit of suits) {
         for (const rank of ranks) {
+            if (isNaN(rank)){
+                value = 10 
+            } else value = rank 
+
             const image = "http://localhost:4000/images/" + rank + "_of_"+ suit + ".png"
-            deck.push({ suit, rank, image});
+            deck.push({ value, suit, rank, image });
         }
     }
 
