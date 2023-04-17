@@ -1,8 +1,11 @@
 const express = require('express')
 const app = express()
+const PORT = 4000
 
-// respond with "hello world" when a GET request is made to the homepage
-app.get('/', (req, res) => {
+// omogoca dostop do '/images/2_of_clubs.png
+app.use(express.static('public'));
+
+app.get('/deck/shuffled', (req, res) => {
     res.send(shuffleDeck(generateDeck()));
 })
 
@@ -12,8 +15,7 @@ function generateDeck() {
     const deck = [];
     for (const suit of suits) {
         for (const rank of ranks) {
-            const image = "http://localhost:3000/static/img/" + rank + "_of_"+ suit + ".png"
-
+            const image = "http://localhost:4000/images/" + rank + "_of_"+ suit + ".png"
             deck.push({ suit, rank, image});
         }
     }
@@ -24,6 +26,7 @@ function generateDeck() {
 function getRandomIndex(max){
     return Math.floor(Math.random() * max);
 }
+
 function shuffleDeck(deck){
     let length = deck.length;
     for(let i = 0; i < length; i++){
@@ -34,4 +37,6 @@ function shuffleDeck(deck){
     return deck;
 }
 
-app.listen(3000);
+app.listen(PORT, () => {
+    console.log(`API ALIVE AND GOOD ON http://localhost:${PORT}`)
+});
