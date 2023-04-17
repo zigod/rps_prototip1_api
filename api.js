@@ -20,7 +20,7 @@ function generateDeck() {
         for (const rank of ranks) {
             if (isNaN(rank)){
                 value = 10 
-            } else value = rank 
+            } else value = parseInt(rank) 
 
             const image = "http://localhost:4000/images/" + rank + "_of_"+ suit + ".png"
             deck.push({ value, suit, rank, image });
