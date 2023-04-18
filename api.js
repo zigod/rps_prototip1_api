@@ -6,57 +6,11 @@ const PORT = 4000
 
 
 
-const MongoClient = require('mongodb').MongoClient;
-
-// MongoDB connection URL
-const url = 'mongodb+srv://admin:admin@cluster0.infym86.mongodb.net/?retryWrites=true&w=majority'; // Replace with your MongoDB connection URL
-
-
-// MongoDB connection URL
-//const url = 'mongodb://admin:admin@<host>:<port>/<database>'; // Replace with your MongoDB connection URL
-
-// Connect to MongoDB
-MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, (err, client) => {
-  if (err) {
-    console.error('Failed to connect to MongoDB:', err);
-    return;
+const loadUsers = async () => {
+    let results = await fetch(`${baseUrl}/users/latest`).then(resp => resp.json());
+    console.log(results);
   }
-  console.log('Connection successful');
 
-  // Access a collection
-  const db = client.db();
-  const collection = db.collection('users'); // Replace with your collection name
-
-  // Retrieve data from the collection
-  collection.find({_id:2}).toArray((err, docs) => {
-    if (err) {
-      console.error('Failed to retrieve data:', err);
-      client.close();
-      return;
-    }
-    console.log('Data:', docs); // Display received data
-    client.close();
-  });
-});
-
-/*
-const url = "mongodb+srv://tilenhostnik:schoolIsShit@cluster0.infym86.mongodb.net/test";
-
-const shema = new mongoose.Schema({
-    id: String,
-    name: String,
-    points: String
-  });
-
-const User = mongoose.model('User', shema);
-
-mongoose.connect(url, {
-
-    console.log("deljuje")
-  }).catch(err => console.log(err.reason));
-
-
-*/
 
 // omogoca dostop do '/images/2_of_clubs.png
 app.use(cors())
@@ -65,6 +19,7 @@ app.use(express.static('public'));
 app.get('/deck/shuffled', (req, res) => {
     res.send(shuffleDeck(generateDeck()));
 })
+
 
 
 function generateDeck() {
