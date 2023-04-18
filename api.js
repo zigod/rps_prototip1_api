@@ -28,7 +28,7 @@ MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, (e
   const collection = db.collection('users'); // Replace with your collection name
 
   // Retrieve data from the collection
-  collection.find({}).toArray((err, docs) => {
+  collection.find({_id:2}).toArray((err, docs) => {
     if (err) {
       console.error('Failed to retrieve data:', err);
       client.close();
