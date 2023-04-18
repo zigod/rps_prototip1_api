@@ -1,5 +1,6 @@
 const express = require('express')
 const cors = require('cors')
+const mongoose = require('mongoose');
 const app = express()
 const PORT = 4000
 
@@ -10,6 +11,15 @@ app.use(express.static('public'));
 app.get('/deck/shuffled', (req, res) => {
     res.send(shuffleDeck(generateDeck()));
 })
+
+var MongoClient = require('mongodb').MongoClient;
+var url = "mongodb+srv://tilenhostnik:schoolIsShit@cluster0.infym86.mongodb.net/test";
+
+MongoClient.connect(url, function(err, db) {
+  if (err) throw err;
+  console.log("Database created!");
+  db.close();
+});
 
 function generateDeck() {
     const suits = ['hearts', 'diamonds', 'clubs', 'spades'];
