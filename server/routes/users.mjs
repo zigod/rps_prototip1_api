@@ -1,5 +1,7 @@
 // Get a list of 50 posts
+
 router.get("/", async (req, res) => {
+  console.log("its in");
     let collection = await db.collection("users");
     let results = await collection.find({})
       .limit(5)

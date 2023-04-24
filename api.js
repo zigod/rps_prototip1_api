@@ -7,10 +7,13 @@ const PORT = 4000
 
 
 const loadUsers = async () => {
-    let results = await fetch(`${baseUrl}/users/latest`).then(resp => resp.json());
-    console.log(results);
+    let results = await fetch("http://localhost:"+PORT+"/users/all").then(resp => resp.json());
+    return results;
   }
 
+app.get('/users/all', (req, res) => {
+    res.send(loadUsers());
+})
 
 // omogoca dostop do '/images/2_of_clubs.png
 app.use(cors())
@@ -20,9 +23,7 @@ app.get('/deck/shuffled', (req, res) => {
     res.send(shuffleDeck(generateDeck()));
 })
 
-app.get('/users/all', (req, res) => {
-    res.send(loadUsers());
-})
+
 
 function generateDeck() {
     const suits = ['hearts', 'diamonds', 'clubs', 'spades'];
