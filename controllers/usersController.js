@@ -51,11 +51,14 @@ module.exports = {
      * usersController.create()
      */
     create: function (req, res) {
+        console.log("THIS ARE THE REQ: ");
+        console.log("THIS ARE THE REQ: ",req);
         var users = new UsersModel({
 			username : req.body.username,
 			password : req.body.password,
 			points : req.body.points
         });
+        
 
         users.save(function (err, users) {
             if (err) {

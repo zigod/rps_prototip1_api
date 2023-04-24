@@ -2,7 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const app = express()
 const PORT = 4000
-var usersRouter = require('routes/usersRoutes.js');
+var usersRouter = require('./routes/usersRoutes.js');
 
 
 
@@ -11,7 +11,7 @@ app.use(cors())
 app.use(express.static('public'));
 
 var mongoose = require("mongoose");
-var mongoDB = "mongodb+srv://admin:admin@cluster0.infym86.mongodb.net/test";
+var mongoDB = "mongodb+srv://admin:admin@cluster0.infym86.mongodb.net/blackjack";
 mongoose.connect(mongoDB);
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
