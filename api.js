@@ -20,7 +20,9 @@ app.get('/deck/shuffled', (req, res) => {
     res.send(shuffleDeck(generateDeck()));
 })
 
-
+app.get('/users/all', (req, res) => {
+    res.send(loadUsers());
+})
 
 function generateDeck() {
     const suits = ['hearts', 'diamonds', 'clubs', 'spades'];
