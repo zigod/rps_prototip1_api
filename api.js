@@ -2,10 +2,24 @@ const express = require('express')
 const cors = require('cors')
 const app = express()
 const PORT = 4000
+var usersRouter = require('routes/usersRoutes.js');
+
+
 
 // omogoca dostop do '/images/2_of_clubs.png
 app.use(cors())
 app.use(express.static('public'));
+
+var mongoose = require("mongoose");
+var mongoDB = "mongodb+srv://admin:admin@cluster0.infym86.mongodb.net/test";
+mongoose.connect(mongoDB);
+mongoose.Promise = global.Promise;
+var db = mongoose.connection;
+
+db.on("error", console.error.bind(console, "mongoDB connection SHIT"));
+app.use('/users', usersRouter);
+
+
 
 app.get('/deck/shuffled', (req, res) => {
     res.send(shuffleDeck(generateDeck()));
