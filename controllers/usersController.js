@@ -127,26 +127,23 @@ module.exports = {
         });
     },
 
-    login:  function (req, res) {
+    login: function (req, res) {
+        console.log(req.body.username)
         try {
-            
-            UsersModel.findOne({"UsersModel.username":req.body.username}, function (err, user) {
-                console.log(req.body,"This is username");
-                console.log(user," This is user");
-
+            UsersModel.findOne({ username:req.body.username }, function (err, user) {
                 if (err) {
                     return res.status(500).json({
                         message: 'User not found!.',
                         error: err
                     });
                 }
-                console.log(user)
+
                 if (!user) {
                     return res.status(404).json({
                         message: 'No such users'
                     });
                 }
-                console.log(user," This is user");
+
                 return res.json(user);
             });
             

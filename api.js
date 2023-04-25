@@ -20,8 +20,6 @@ var db = mongoose.connection;
 db.on("error", console.error.bind(console, "mongoDB connection SHIT"));
 app.use('/users', usersRouter);
 
-
-
 app.get('/deck/shuffled', (req, res) => {
     res.send(shuffleDeck(generateDeck()));
 })
