@@ -125,5 +125,65 @@ module.exports = {
 
             return res.status(204).json();
         });
+    },
+
+    login:  function (req, res) {
+        try {
+            
+            UsersModel.findOne({"UsersModel.username":req.body.username}, function (err, user) {
+                console.log(req.body,"This is username");
+                console.log(user," This is user");
+
+                if (err) {
+                    return res.status(500).json({
+                        message: 'User not found!.',
+                        error: err
+                    });
+                }
+                console.log(user)
+                if (!user) {
+                    return res.status(404).json({
+                        message: 'No such users'
+                    });
+                }
+                console.log(user," This is user");
+                return res.json(user);
+            });
+            
+            //const user = await UsersModel.findOne({ username: req.body.username });
+            //console.log(user ," This is user");
+           // //if (user) {
+            //  //check if password matches
+            //  const result = await bcrypt.compare(req.body.password, user.password);
+            //  if (result) {
+            //    // sign token and send it in response
+            //    res.json({ token });
+            //  } else {
+            //    res.status(400).json({ error: "password doesn't match" });
+            //  }
+            //} else {
+            //  res.status(400).json({ error: "User doesn't exist" });
+            //}
+          } catch (error) {
+            res.status(400).json({ error });
+          }
+    },
+
+    register: function (req, res) {
+        var id = req.params.id;
+
+        UsersModel.findByIdAndRemove(id, function (err, users) {
+            if (err) {
+                return res.status(500).json({
+                    message: 'Error when deleting the users.',
+                    error: err
+                });
+            }
+
+            return res.status(204).json();
+        });
     }
+
+
+    
 };
