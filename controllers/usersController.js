@@ -51,16 +51,13 @@ module.exports = {
      * usersController.create()
      */
     create: function (req, res) {
-        console.log("THIS ARE THE REQ: ");
-        console.log("THIS ARE THE REQ: ",req);
-        var users = new UsersModel({
+        var user = new UsersModel({
 			username : req.body.username,
 			password : req.body.password,
 			points : req.body.points
         });
         
-
-        users.save(function (err, users) {
+        user.save(function (err, users) {
             if (err) {
                 return res.status(500).json({
                     message: 'Error when creating users',
@@ -68,7 +65,7 @@ module.exports = {
                 });
             }
 
-            return res.status(201).json(users);
+            return res.status(201).json(user);
         });
     },
 
@@ -164,23 +161,5 @@ module.exports = {
           } catch (error) {
             res.status(400).json({ error });
           }
-    },
-
-    register: function (req, res) {
-        var id = req.params.id;
-
-        UsersModel.findByIdAndRemove(id, function (err, users) {
-            if (err) {
-                return res.status(500).json({
-                    message: 'Error when deleting the users.',
-                    error: err
-                });
-            }
-
-            return res.status(204).json();
-        });
-    }
-
-
-    
+    },    
 };
