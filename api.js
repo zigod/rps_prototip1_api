@@ -1,6 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const app = express()
+app.use(express.json());
 const PORT = 4000
 var usersRouter = require('./routes/usersRoutes.js');
 
