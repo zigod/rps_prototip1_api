@@ -1,12 +1,13 @@
-var UsersModel = require('../models/usersModel.js');
-
+var UsersModel = require("../models/usersModel.js");
+var bcrypt = require("bcrypt");
+var jwt = require("jsonwebtoken");
+var config = require("../config/auth.config.js");
 /**
  * usersController.js
  *
  * @description :: Server-side logic for managing userss.
  */
 module.exports = {
-
     /**
      * usersController.list()
      */
@@ -14,8 +15,8 @@ module.exports = {
         UsersModel.find(function (err, userss) {
             if (err) {
                 return res.status(500).json({
-                    message: 'Error when getting users.',
-                    error: err
+                    message: "Error when getting users.",
+                    error: err,
                 });
             }
 
@@ -29,17 +30,17 @@ module.exports = {
     show: function (req, res) {
         var id = req.params.id;
 
-        UsersModel.findOne({_id: id}, function (err, users) {
+        UsersModel.findOne({ _id: id }, function (err, users) {
             if (err) {
                 return res.status(500).json({
-                    message: 'Error when getting users.',
-                    error: err
+                    message: "Error when getting users.",
+                    error: err,
                 });
             }
 
             if (!users) {
                 return res.status(404).json({
-                    message: 'No such users'
+                    message: "No such users",
                 });
             }
 
@@ -52,16 +53,16 @@ module.exports = {
      */
     create: function (req, res) {
         var user = new UsersModel({
-			username : req.body.username,
-			password : req.body.password,
-			points : req.body.points
+            username: req.body.username,
+            password: req.body.password,
+            points: req.body.points,
         });
-        
+
         user.save(function (err, users) {
             if (err) {
                 return res.status(500).json({
-                    message: 'Error when creating users',
-                    error: err
+                    message: "Error when creating users",
+                    error: err,
                 });
             }
 
@@ -75,29 +76,33 @@ module.exports = {
     update: function (req, res) {
         var id = req.params.id;
 
-        UsersModel.findOne({_id: id}, function (err, users) {
+        UsersModel.findOne({ _id: id }, function (err, users) {
             if (err) {
                 return res.status(500).json({
-                    message: 'Error when getting users',
-                    error: err
+                    message: "Error when getting users",
+                    error: err,
                 });
             }
 
             if (!users) {
                 return res.status(404).json({
-                    message: 'No such users'
+                    message: "No such users",
                 });
             }
 
-            users.username = req.body.username ? req.body.username : users.username;
-			users.password = req.body.password ? req.body.password : users.password;
-			users.points = req.body.points ? req.body.points : users.points;
-			
+            users.username = req.body.username
+                ? req.body.username
+                : users.username;
+            users.password = req.body.password
+                ? req.body.password
+                : users.password;
+            users.points = req.body.points ? req.body.points : users.points;
+
             users.save(function (err, users) {
                 if (err) {
                     return res.status(500).json({
-                        message: 'Error when updating users.',
-                        error: err
+                        message: "Error when updating users.",
+                        error: err,
                     });
                 }
 
@@ -115,8 +120,8 @@ module.exports = {
         UsersModel.findByIdAndRemove(id, function (err, users) {
             if (err) {
                 return res.status(500).json({
-                    message: 'Error when deleting the users.',
-                    error: err
+                    message: "Error when deleting the users.",
+                    error: err,
                 });
             }
 
@@ -125,41 +130,49 @@ module.exports = {
     },
 
     login: function (req, res) {
-        console.log(req.body.username)
+        console.log(req.body.username);
         try {
-            UsersModel.findOne({ username:req.body.username }, function (err, user) {
-                if (err) {
-                    return res.status(500).json({
-                        message: 'User not found!.',
-                        error: err
+            UsersModel.findOne(
+                { username: req.body.username },
+                function (err, user) {
+                    if (err) {
+                        return res.status(500).json({
+                            message: "Error getting user.",
+                            error: err,
+                        });
+                    }
+
+                    if (!user) {
+                        return res.status(404).json({
+                            message: "User not found.",
+                        });
+                    }
+
+                    var passwordIsValid = bcrypt.compare(
+                        req.body.password,
+                        user.password
+                    );
+                    if (!passwordIsValid) {
+                        return res.status(401).send({
+                            accessToken: null,
+                            message: "Invalid password!",
+                        });
+                    }
+
+                    var token = jwt.sign({ id: user.id }, config.secret, {
+                        expiresIn: 86400,
+                    });
+
+                    console.log(token);
+                    return res.status(200).send({
+                        id: user._id,
+                        username: user.username,
+                        accessToken: token,
                     });
                 }
-
-                if (!user) {
-                    return res.status(404).json({
-                        message: 'No such users'
-                    });
-                }
-
-                return res.json(user);
-            });
-            
-            //const user = await UsersModel.findOne({ username: req.body.username });
-            //console.log(user ," This is user");
-           // //if (user) {
-            //  //check if password matches
-            //  const result = await bcrypt.compare(req.body.password, user.password);
-            //  if (result) {
-            //    // sign token and send it in response
-            //    res.json({ token });
-            //  } else {
-            //    res.status(400).json({ error: "password doesn't match" });
-            //  }
-            //} else {
-            //  res.status(400).json({ error: "User doesn't exist" });
-            //}
-          } catch (error) {
+            );
+        } catch (error) {
             res.status(400).json({ error });
-          }
-    },    
+        }
+    },
 };
