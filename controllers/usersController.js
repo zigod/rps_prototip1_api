@@ -30,7 +30,7 @@ module.exports = {
     show: function (req, res) {
         var id = req.params.id;
 
-        UsersModel.findOne({ _id: id }, function (err, users) {
+        UsersModel.findOne({ _id: id }, function (err, user) {
             if (err) {
                 return res.status(500).json({
                     message: "Error when getting users.",
@@ -38,13 +38,13 @@ module.exports = {
                 });
             }
 
-            if (!users) {
+            if (!user) {
                 return res.status(404).json({
                     message: "No such users",
                 });
             }
-
-            return res.json(users);
+            user.password = "";
+            return res.json(user);
         });
     },
 
@@ -55,7 +55,7 @@ module.exports = {
         var user = new UsersModel({
             username: req.body.username,
             password: req.body.password,
-            points: req.body.points,
+            points: 1000,
         });
 
         user.save(function (err, users) {
