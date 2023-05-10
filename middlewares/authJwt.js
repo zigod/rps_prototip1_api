@@ -4,7 +4,6 @@ const User = require("../models/usersModel");
 
 verifyToken = (req, res, next) => {
     let token = req.headers.authorization;
-    console.log(req.headers.authorization);
     if (!token) {
         return res.status(403).send({ message: "No token!" });
     }
