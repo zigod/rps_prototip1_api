@@ -7,8 +7,9 @@ var usersRouter = require("./routes/usersRoutes.js");
 // omogoca dostop do '/images/2_of_clubs.png
 
 var mongoose = require("mongoose");
-var mongoDB =
-    "mongodb+srv://admin:admin@cluster0.infym86.mongodb.net/blackjack";
+// var mongoDB =
+//     "mongodb+srv://admin:admin@cluster0.infym86.mongodb.net/blackjack";
+var mongoDB = "mongodb://localhost:27017/blackjack"
 mongoose.connect(mongoDB);
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
