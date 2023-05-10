@@ -75,7 +75,6 @@ module.exports = {
      */
     update: function (req, res) {
         var id = req.params.id;
-
         UsersModel.findOne({ _id: id }, function (err, users) {
             if (err) {
                 return res.status(500).json({
@@ -105,7 +104,7 @@ module.exports = {
                         error: err,
                     });
                 }
-
+                users.password = "";
                 return res.json(users);
             });
         });

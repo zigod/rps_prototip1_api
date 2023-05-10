@@ -21,7 +21,7 @@ router.post("/login", usersController.login);
 /*
  * PUT
  */
-router.put("/:id", usersController.update);
+router.put("/:id", verifyToken, usersController.update);
 
 /*
  * DELETE
