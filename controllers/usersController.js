@@ -12,16 +12,16 @@ module.exports = {
      * usersController.list()
      */
     list: function (req, res) {
-        UsersModel.find(function (err, userss) {
+        UsersModel.find(function (err, users) {
             if (err) {
                 return res.status(500).json({
                     message: "Error when getting users.",
                     error: err,
                 });
             }
-
-            return res.json(userss);
-        });
+            return res.json(users);
+        }).select(["-password", "-_id", "-__v"])
+        .sort({points: -1});
     },
 
     /**

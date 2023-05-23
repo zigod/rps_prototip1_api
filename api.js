@@ -9,7 +9,7 @@ var usersRouter = require("./routes/usersRoutes.js");
 var mongoose = require("mongoose");
 // var mongoDB =
 //     "mongodb+srv://admin:admin@cluster0.infym86.mongodb.net/blackjack";
-var mongoDB = "mongodb://localhost:27017/blackjack"
+var mongoDB = "mongodb://root:orbiti123@ceste.ddns.net/blackjack?AuthSource=admin"
 mongoose.connect(mongoDB);
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;

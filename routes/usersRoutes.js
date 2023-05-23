@@ -6,7 +6,7 @@ const { verifyToken } = require("../middlewares/authJwt.js");
 /*
  * GET
  */
-router.get("/all", usersController.list);
+router.get("/leaderboard", usersController.list);
 
 /*
  * GET
